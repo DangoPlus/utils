@@ -2,8 +2,44 @@
 const regNum = '/^-?d{0,8}(.d{0,2})'; //匹配小数点前八位后两位，包含负数
 const regNumAll = '/^-?d*(.d*)'; // 匹配任意数字，包含小数负数
 
-import { parse } from 'querystring';
+/**
+ * 对数字做过滤精确到小数点后固定位数
+ * @param num 需要处理的数字
+ * @param length 精确到小数点后的长度，默认2位小数（四舍五入）
+ */
+export function fixedNum(num: any, length: number = 2) {
+  const newNum = parseFloat(num);
+  if (isNaN(newNum)) {
+    return '';
+  } else {
+    return Math.round(newNum * Math.pow(10, length)) / Math.pow(10, length);
+  }
+}
 
+// 计算时间间距
+export function getTimeDistance(type: string): [Moment, Moment] {
+  const now = new Date();
+  // 今天
+  if (type === 'today') {
+    return [moment(now).startOf('day'), moment(now).endOf('day')];
+  }
+  // 本周
+  if (type === 'week') {
+    return [moment(now).startOf('week'), moment(now).endOf('week')];
+  }
+  // 本月
+  if (type === 'month') {
+    return [moment(now).startOf('month'), moment(now).endOf('month')];
+  }
+  // 本季度
+  if (type === 'quarter') {
+    return [moment(now).startOf('quarter'), moment(now).endOf('quarter')];
+  }
+  // 今年
+  return [moment(now).startOf('year'), moment(now).endOf('year')];
+}
+
+import { parse } from 'querystring';
 
 const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
 export const isUrl = (path: string): boolean => reg.test(path);
