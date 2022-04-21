@@ -84,5 +84,23 @@ export const downloadFileAlt = (url: string, filename = '') => {
 };
 
 
+// 获取url参数
+function getPageQuery() {
+        // 定义返回结果
+        const result = {};
+        // 获取url上的参数（使用decodeURIComponent对url参数进行解码）
+        const search = decodeURIComponent(window.location.search);
+        const tempArr = search !== "" ? search.substr(1).split("&") : [];
 
+        tempArr.forEach((item) => {
+          if (item) {
+            // 将参数名和参数值拆分
+            const itemArr = item.split("=");
+            // 参数名作为key, 参数值为value
+            result[itemArr[0]] = itemArr[1];
+          }
+        });
+
+        return result;
+      }
 
